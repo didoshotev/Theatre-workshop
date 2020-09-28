@@ -23,8 +23,12 @@ const PlaysSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    creatorID: {
+        type: String,
+        required: true
+    },
     usersLiked: [{
-        type: UsersIds,
+        type: 'ObjectId',
         ref: 'users'
     }]
 })

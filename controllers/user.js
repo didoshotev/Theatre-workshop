@@ -97,8 +97,9 @@ const getUserStatus = (req, res, next) => {
         req.isLoggedIn = false;
     };
     try {
-        jwt.verify(token, config.privateKey);
+        const key = jwt.verify(token, config.privateKey);
         req.isLoggedIn = true;
+        req.key = key;
     } catch (err) {
         req.isLoggedIn = false;
     };

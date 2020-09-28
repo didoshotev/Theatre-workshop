@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const mongoosePackage = {
     saveItem: async function (data, theClass) {
         return new theClass(data).save((err) => {
@@ -10,10 +9,7 @@ const mongoosePackage = {
 
     },
     getItemById: async function (id, theClass) {
-        const item = await new theClass.findById().lean();
-        if (!item) {
-            return null
-        }
+        const item = await theClass.findById(id);
         return item
     },
     getAllItems: async function (theClass) {
