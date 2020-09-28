@@ -25,7 +25,7 @@ module.exports = (app) => {
         const status = await saveUser(req, res)
         console.log(status);
         if (status === true) {
-            res.redirect('/user-home')
+            res.redirect('/')
         } else {
             res.redirect('/register?error=true');
         }
