@@ -16,8 +16,11 @@
                 <a class="btn delete" href="/delete">Delete</a>
                 <a class="btn edit" href="/editDetails">Edit</a>
                 {{else}}
-                <a class="btn like" href="/like">Like</a>
+                {{#if isLiked}}
                 <span class="liked">You have already liked this play!</span>
+                {{else}}
+                <a class="btn like" href="/like/{{currentPlay._id}}">Like</a>
+                {{/if}}
                 {{/if}}
             </div>
         </section>

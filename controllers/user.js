@@ -51,7 +51,7 @@ const saveUser = async (req, res) => {
 };
 
 const getUserById = async (id) => {
-    const selectedUser = mognoosePackage.getItemById(id, User);
+    const selectedUser = mongoosePackage.getItemById(id, User);
     if (!selectedUser) {
         return null;
     }
@@ -113,5 +113,5 @@ module.exports = {
     getUserById,
     getUserByUsername,
     verifyUser,
-    getUserStatus
+    getUserStatus,
 }

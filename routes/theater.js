@@ -1,5 +1,5 @@
-const { getUserStatus } = require("../controllers/user");
-const { savePlay, getPlayById } = require('../controllers/plays');
+const { getUserStatus, getUserById } = require("../controllers/user");
+const { savePlay, getPlayById, updatePlay, getAndSortPlays } = require('../controllers/plays');
 
 module.exports = (app) => {
     app.get('/create', getUserStatus, (req, res) => {
@@ -12,13 +12,15 @@ module.exports = (app) => {
         const objectId = req.params.id
         const currentUserID = req.key.userID;
         const currentPlay = await getPlayById(objectId)
+        let isLiked = false;
+        if (currentPlay.usersLiked.includes(currentUserID)) {
+            isLiked = true;
+        };
         const currentPlayCreatorID = currentPlay.creatorID;
         let isCreator = false;
-
         if (currentUserID === currentPlayCreatorID) {
             isCreator = true;
         }
-
         if (currentPlay == null) {
             res.redirect('/');
             console.error('Fail to Load the details page');
@@ -26,11 +28,13 @@ module.exports = (app) => {
         }
         res.render('./theater pages/theater-details', {
             currentPlay: currentPlay.toObject(),
-            isCreator
+            isCreator,
+            isLiked
         });
     });
 
     app.post('/create', getUserStatus, async (req, res) => {
+
         const { title, description, imageUrl, checkBox } = req.body;
         const creatorID = req.key.userID;
         try {
@@ -58,5 +62,28 @@ module.exports = (app) => {
 
         const play = await savePlay({ isPublic, title, description, imageUrl, createdAt, creatorID })
         res.redirect('/');
+    });
+
+    app.get('/like/:id', getUserStatus, async (req, res) => {
+
+        const currentUserID = req.key.userID;
+        const playID = req.params.id;
+        const currentPlay = await getPlayById(playID);
+        if (currentPlay.usersLiked.includes(currentUserID)) {
+            res.redirect('/');
+            console.log("You've already liked this play!");
+            return;
+        };
+        currentPlay.usersLiked.push(currentUserID);
+        currentPlay.save();
+        res.redirect('/');
+    });
+
+    app.get('/sortByLikes', async (req, res) => {
+        res.redirect('/?sortByLikes=true');
+    });
+
+    app.get('/sortByDate', async (req, res) => {
+        res.redirect('/?sortByDate=true');
     });
 };

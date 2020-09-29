@@ -35,12 +35,19 @@ const getPlayById = async (id) => {
 
 };
 
-const sortPlays = async (data) => {
-    let plays = data.sort((a, b) => a.usersLiked.length - b.usersLiked.length)
+const updatePlay = async (play) => {
+    return await play.save();
+}
+
+const getAndSortPlays = async () => {
+    const currentPlays = await getAllPlays();
+    return currentPlays.sort((a, b) => b.usersLiked.length - a.usersLiked.length);
 };
 
 module.exports = {
     savePlay,
     getAllPlays,
-    getPlayById
+    getPlayById,
+    updatePlay,
+    getAndSortPlays
 }

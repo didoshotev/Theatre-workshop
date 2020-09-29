@@ -19,6 +19,10 @@ const mongoosePackage = {
     getItemByUsername: async function (prop, theClass) {
         const selectedItem = await theClass.findOne({ username: prop }).lean();
         return selectedItem;
+    },
+    findAndUpdate: async function (id, update, theClass) {
+        const current = await theClass.findByIdAndUpdate(id, update)
+        return current;
     }
 };
 
